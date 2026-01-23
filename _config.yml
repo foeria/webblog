@@ -7,13 +7,13 @@ title: 编程博客
 subtitle: '分享编程知识与技术实践'
 description: '一个专注于前端、后端、技术分享的编程博客'
 keywords: 编程,博客,技术,前端,后端,JavaScript,React,Node.js
-author: emmfoeria
+author: foeria
 language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://emmfoeria.github.io/blog
+url: https://foeria.github.io/blog
 root: /blog/
 permalink: :year/:month/:day/:title/
 permalink_defaults:

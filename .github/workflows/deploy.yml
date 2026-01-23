@@ -48,15 +48,16 @@ jobs:
           echo "files generated"
           du -sh public
 
-      - name: 部署到 GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: 上传页面物件
+        uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && success()
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          force_orphan: true
-          user_name: github-actions[bot]
-          user_email: github-actions[bot]@users.noreply.github.com
+          path: ./public
+
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        if: github.ref == 'refs/heads/main' && success()
 
       - name: 生成摘要
         if: always()
@@ -65,7 +66,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "${{ job.status }}" = "success" ]; then
             echo "✅ 部署成功！" >> $GITHUB_STEP_SUMMARY
-            echo "📺 访问地址: https://\${{ github.repository_owner }}.github.io/blog/" >> $GITHUB_STEP_SUMMARY
+            echo "📺 访问地址: https://${{ github.repository_owner }}.github.io/blog/" >> $GITHUB_STEP_SUMMARY
           else
             echo "❌ 部署失败，请查看日志" >> $GITHUB_STEP_SUMMARY
           fi

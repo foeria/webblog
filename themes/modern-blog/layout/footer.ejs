@@ -1,0 +1,55 @@
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>关于我</h4>
+            <p>热爱编程和分享的开发者，致力于创建高质量的技术内容。</p>
+            <div class="social-links">
+                <a href="#" title="GitHub" class="social-icon">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" title="Twitter" class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" title="邮箱" class="social-icon">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>快速导航</h4>
+            <ul class="footer-links">
+                <li><a href="<%= config.root %>">首页</a></li>
+                <li><a href="<%= config.root %>categories/">分类</a></li>
+                <li><a href="<%= config.root %>tags/">标签</a></li>
+                <li><a href="<%= config.root %>archives/">归档</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>最新分类</h4>
+            <ul class="footer-links">
+                <li><a href="<%= config.root %>categories/前端开发/">前端开发</a></li>
+                <li><a href="<%= config.root %>categories/后端开发/">后端开发</a></li>
+                <li><a href="<%= config.root %>categories/技术分享/">技术分享</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>订阅</h4>
+            <p>订阅我的博客，获取最新文章更新</p>
+            <form class="subscribe-form">
+                <input type="email" placeholder="输入您的邮箱" required>
+                <button type="submit">订阅</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; <%= new Date().getFullYear() %> <%= config.title %>. All Rights Reserved.</p>
+        <p>
+            Powered by <a href="https://hexo.io">Hexo</a> & 
+            <a href="#">Modern Blog Theme</a>
+        </p>
+    </div>
+</footer>

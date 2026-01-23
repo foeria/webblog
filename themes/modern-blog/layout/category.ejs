@@ -1,0 +1,66 @@
+<div class="archive-container">
+    <header class="archive-header">
+        <h1 class="archive-title">
+            <i class="fas fa-folder"></i>
+            <%= page.category %>
+        </h1>
+        <p class="archive-count">共 <%= page.posts.length %> 篇文章</p>
+        <p class="archive-hint">
+            <i class="fas fa-info-circle"></i>
+            在<a href="<%= config.root %>writer/">写作页面</a>管理分类和文章
+        </p>
+    </header>
+
+    <div class="posts-list">
+        <% if (page.posts.length === 0) { %>
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <p>该分类暂无文章</p>
+                <p class="empty-hint">
+                    在<a href="<%= config.root %>writer/">写作页面</a>创建文章
+                </p>
+            </div>
+        <% } %>
+        
+        <% page.posts.each(function(post) { %>
+            <article class="post-card">
+                <div class="post-header">
+                    <h3 class="post-title">
+                        <a href="<%= config.root %><%= post.path %>"><%= post.title %></a>
+                    </h3>
+                    <div class="post-meta">
+                        <span class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <%= date(post.date, 'YYYY-MM-DD') %>
+                        </span>
+                        <% if (post.skill_level) { %>
+                            <span class="meta-item skill-badge">
+                                <i class="fas fa-graduation-cap"></i>
+                                <%= post.skill_level %>
+                            </span>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="post-excerpt">
+                    <% if (post.excerpt) { %>
+                        <%= post.excerpt %>
+                    <% } else { %>
+                        <%= post.content.substring(0, 150) %>...
+                    <% } %>
+                </div>
+                <div class="post-footer">
+                    <% if (post.tags.length > 0) { %>
+                        <div class="post-tags">
+                            <% post.tags.forEach(function(tag) { %>
+                                <a href="<%= config.root %><%= tag.path %>" class="tag"><%= tag.name %></a>
+                            <% }); %>
+                        </div>
+                    <% } %>
+                    <a href="<%= config.root %><%= post.path %>" class="read-more">阅读全文 →</a>
+                </div>
+            </article>
+        <% }); %>
+    </div>
+</div>
+</div>
+

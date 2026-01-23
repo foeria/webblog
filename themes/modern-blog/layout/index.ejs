@@ -1,0 +1,87 @@
+<!-- 主页横幅 -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">欢迎来到<br><span class="gradient-text"><%= config.title %></span></h1>
+        <p class="hero-subtitle">分享编程知识 | 技术实践 | 学习笔记</p>
+        <div class="hero-actions">
+            <a href="#blog-posts" class="btn btn-primary">开始阅读</a>
+            <a href="<%= config.root %>categories/" class="btn btn-secondary">浏览分类</a>
+        </div>
+    </div>
+    <div class="hero-decoration">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="wave">
+            <path d="M0,50 Q300,0 600,50 T1200,50 L1200,120 L0,120 Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- 最新文章列表 -->
+<section class="blog-posts" id="blog-posts">
+    <div class="container">
+        <h2 class="section-title">最新文章</h2>
+        <div class="posts-list">
+            <% page.posts.each(function(post) { %>
+                <article class="post-card">
+                    <div class="post-header">
+                        <h3 class="post-title">
+                            <a href="<%= config.root %><%= post.path %>"><%= post.title %></a>
+                        </h3>
+                        <div class="post-meta">
+                            <span class="meta-item">
+                                <i class="fas fa-calendar"></i>
+                                <%= date(post.date, 'YYYY-MM-DD') %>
+                            </span>
+                            <% if (post.categories.length > 0) { %>
+                                <span class="meta-item">
+                                    <i class="fas fa-folder"></i>
+                                    <% post.categories.forEach(function(cat, idx) { %>
+                                        <a href="<%= config.root %><%= cat.path %>" class="category-link"><%= cat.name %></a>
+                                        <% if (idx < post.categories.length - 1) { %>，<% } %>
+                                    <% }); %>
+                                </span>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="post-excerpt">
+                        <% if (post.excerpt) { %>
+                            <%= post.excerpt %>
+                        <% } else { %>
+                            <%= post.content.substring(0, 150) %>...
+                        <% } %>
+                    </div>
+                    <div class="post-footer">
+                        <% if (post.tags.length > 0) { %>
+                            <div class="post-tags">
+                                <% post.tags.forEach(function(tag) { %>
+                                    <a href="<%= config.root %><%= tag.path %>" class="tag"><%= tag.name %></a>
+                                <% }); %>
+                            </div>
+                        <% } %>
+                        <a href="<%= config.root %><%= post.path %>" class="read-more">阅读全文 →</a>
+                    </div>
+                </article>
+            <% }); %>
+        </div>
+
+        <!-- 分页 -->
+        <% if (page.total > 1) { %>
+            <div class="pagination">
+                <% if (page.prev) { %>
+                    <a href="<%= page.prev_link %>" class="pagination-btn prev">
+                        <i class="fas fa-chevron-left"></i> 上一页
+                    </a>
+                <% } %>
+                
+                <div class="pagination-info">
+                    第 <%= page.current %> / <%= page.total %> 页
+                </div>
+
+                <% if (page.next) { %>
+                    <a href="<%= page.next_link %>" class="pagination-btn next">
+                        下一页 <i class="fas fa-chevron-right"></i>
+                    </a>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+</section>

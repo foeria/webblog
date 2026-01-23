@@ -1,0 +1,98 @@
+<!-- Skill 分类页面布局 -->
+<div class="skill-container">
+    <header class="skill-header">
+        <h1 class="skill-page-title">
+            <i class="fas fa-code"></i> 技能分享
+        </h1>
+        <p class="skill-subtitle">记录和分享我正在学习或掌握的技能</p>
+    </header>
+
+    <div class="skills-content">
+        <!-- 技能卡片网格 -->
+        <div class="skills-grid">
+            <% 
+                // 处理来自生成器的posts数据
+                const posts = page.__posts || [];
+            %>
+            <% posts.forEach(function(post) { %>
+                <article class="skill-card">
+                    <div class="skill-header-inner">
+                        <% if (post.skill_icon) { %>
+                            <div class="skill-icon">
+                                <i class="<%= post.skill_icon %>"></i>
+                            </div>
+                        <% } else { %>
+                            <div class="skill-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        <% } %>
+                        <div class="skill-meta">
+                            <% if (post.skill_level) { %>
+                                <span class="skill-level skill-level-<%= post.skill_level %>">
+                                    <%= post.skill_level %>
+                                </span>
+                            <% } %>
+                            <span class="skill-date">
+                                <%= date(post.date, 'YYYY-MM-DD') %>
+                            </span>
+                        </div>
+                    </div>
+
+                    <h3 class="skill-title">
+                        <a href="<%= config.root %><%= post.path %>"><%= post.title %></a>
+                    </h3>
+
+                    <% if (post.skill_category) { %>
+                        <div class="skill-category-badge">
+                            <i class="fas fa-folder"></i>
+                            <%= post.skill_category %>
+                        </div>
+                    <% } %>
+
+                    <div class="skill-excerpt">
+                        <% if (post.excerpt) { %>
+                            <%= post.excerpt %>
+                        <% } else { %>
+                            <%= post.content.substring(0, 120) %>...
+                        <% } %>
+                    </div>
+
+                    <% if (post.tags && post.tags.length > 0) { %>
+                        <div class="skill-tags">
+                            <% post.tags.forEach(function(tag) { %>
+                                <a href="<%= config.root %><%= tag.path %>" class="skill-tag">
+                                    <i class="fas fa-tag"></i> <%= tag.name %>
+                                </a>
+                            <% }); %>
+                        </div>
+                    <% } %>
+
+                    <a href="<%= config.root %><%= post.path %>" class="skill-read-more">
+                        了解详情 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </article>
+            <% }); %>
+        </div>
+
+        <!-- 分页 -->
+        <% if (page.total > 1) { %>
+            <div class="pagination">
+                <% if (page.prev) { %>
+                    <a href="<%= config.root %><%= page.prev %>" class="pagination-btn prev">
+                        <i class="fas fa-chevron-left"></i> 上一页
+                    </a>
+                <% } %>
+                
+                <div class="pagination-info">
+                    第 <%= page.current %> / <%= page.total %> 页
+                </div>
+
+                <% if (page.next) { %>
+                    <a href="<%= config.root %><%= page.next %>" class="pagination-btn next">
+                        下一页 <i class="fas fa-chevron-right"></i>
+                    </a>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+</div>

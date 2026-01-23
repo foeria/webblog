@@ -1,0 +1,71 @@
+name: 部署 Hexo 博客到 GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # 允许手动触发
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 检查 Hexo 配置
+        run: npx hexo config
+
+      - name: 生成静态文件
+        run: |
+          npx hexo clean
+          npx hexo generate
+
+      - name: 检查生成结果
+        run: |
+          echo "=== 生成文件统计 ==="
+          find public -type f | wc -l
+          echo "files generated"
+          du -sh public
+
+      - name: 部署到 GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main' && success()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          force_orphan: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+
+      - name: 生成摘要
+        if: always()
+        run: |
+          echo "## GitHub Pages 部署结果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "✅ 部署成功！" >> $GITHUB_STEP_SUMMARY
+            echo "📺 访问地址: https://\${{ github.repository_owner }}.github.io/blog/" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ 部署失败，请查看日志" >> $GITHUB_STEP_SUMMARY
+          fi

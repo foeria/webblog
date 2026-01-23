@@ -1,0 +1,46 @@
+name: 博客自动部署
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      
+    - name: 设置 Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'my-blog/package-lock.json'
+        
+    - name: 安装依赖
+      run: |
+        cd my-blog
+        npm ci
+        
+    - name: 清理并生成静态文件
+      run: |
+        cd my-blog
+        npx hexo clean
+        npx hexo generate
+        
+    - name: 部署到 GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./my-blog/public
+        # 如果使用自定义域名，取消下面一行的注释
+        # cname: your-domain.com
+
+# 注意：
+# 1. 确保在仓库设置中启用了 GitHub Pages
+# 2. 将此文件保存为 .github/workflows/deploy.yml
+# 3. 推送到 main 分支后会自动触发部署
+# 4. 也可以在 Actions 页面手动触发部署

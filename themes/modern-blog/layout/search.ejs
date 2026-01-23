@@ -1,0 +1,53 @@
+<div class="search-container">
+    <header class="search-header">
+        <h1 class="search-title">
+            <i class="fas fa-search"></i>
+            搜索结果
+        </h1>
+        <div class="search-box">
+            <input type="text" id="search-input" class="search-input" placeholder="输入关键词...">
+            <button id="search-btn" class="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </header>
+
+    <div id="search-results" class="search-results">
+        <% if (typeof local_search !== 'undefined' && local_search.length > 0) { %>
+            <% local_search.forEach(function(item) { %>
+                <article class="search-result-item">
+                    <h3 class="result-title">
+                        <a href="<%= config.root %><%= item.path %>"><%= item.title %></a>
+                    </h3>
+                    <p class="result-excerpt"><%= item.text.substring(0, 200) %>...</p>
+                    <div class="result-meta">
+                        <% if (item.categories.length > 0) { %>
+                            <span class="result-category">
+                                <i class="fas fa-folder"></i>
+                                <%= item.categories[0].name %>
+                            </span>
+                        <% } %>
+                        <span class="result-date">
+                            <i class="fas fa-calendar"></i>
+                            <%= moment(item.date).format('YYYY-MM-DD') %>
+                        </span>
+                    </div>
+                </article>
+            <% }); %>
+        <% } else { %>
+            <div class="no-results">
+                <i class="fas fa-inbox"></i>
+                <p>未找到匹配的文章</p>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<script>
+document.getElementById('search-btn').addEventListener('click', function() {
+    var keyword = document.getElementById('search-input').value;
+    if (keyword) {
+        window.location.href = '<%= config.root %>search/?q=' + encodeURIComponent(keyword);
+    }
+});
+</script>

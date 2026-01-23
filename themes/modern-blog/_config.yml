@@ -1,0 +1,47 @@
+# 主题配置文件
+
+# 菜单配置
+menu:
+  首页: /
+  分类: /categories/
+  技能: /skill/
+  写作: /writer/
+  关于: /about/
+
+# 页面布局配置
+page_layout:
+  archive: archives
+  category: category
+  category_index: categories-index
+  skill: skill
+  tag: tag
+  about: about
+  search: search
+
+# 搜索配置
+search:
+  enabled: true
+  type: local
+
+# 代码高亮配置
+highlight:
+  enable: true
+  line_number: true
+  tab_replace: '  '
+
+# 社交媒体链接
+social:
+  GitHub: https://github.com/yourusername
+  Twitter: https://twitter.com/yourusername
+  Email: mailto:your-email@example.com
+
+# 页脚配置
+footer:
+  copyright: 'Copyright © 2026 Your Name. All rights reserved.'
+  powered: 'Powered by Hexo & Modern Blog Theme'
+
+# 外观配置
+appearance:
+  theme_color: '#2563eb'  # 蓝色
+  dark_mode: true
+  animation: true

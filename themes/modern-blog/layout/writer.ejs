@@ -1,0 +1,362 @@
+<!-- 写作编辑页面 - VSCode风格资源管理器 -->
+<div class="writer-container vscode-style">
+    <header class="writer-header">
+        <h1 class="writer-title">
+            <i class="fas fa-pen-fancy"></i> 内容管理中心
+        </h1>
+        <p class="writer-subtitle">创建分类、管理文章、发布内容</p>
+    </header>
+
+    <div class="writer-content">
+        <!-- 左侧：VSCode风格资源管理器 -->
+        <div class="vscode-explorer">
+            <div class="explorer-header">
+                <span class="explorer-title">资源管理器</span>
+                <div class="explorer-actions">
+                    <button class="explorer-action" onclick="openCreateCategoryModal()" title="新建分类">
+                        <i class="fas fa-folder-plus"></i>
+                    </button>
+                    <button class="explorer-action" onclick="collapseAllCategories()" title="折叠所有">
+                        <i class="fas fa-compress-alt"></i>
+                    </button>
+                    <button class="explorer-action" onclick="refreshExplorer()" title="刷新">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="explorer-content" id="explorer-tree">
+                <!-- 分类树将通过JS动态生成 -->
+                <div class="loading">加载中...</div>
+            </div>
+        </div>
+
+        <!-- 右侧：编辑区域 -->
+        <div class="editor-main">
+            <!-- 欢迎页面（初始状态） -->
+            <div id="welcome-panel" class="welcome-panel">
+                <div class="welcome-content">
+                    <i class="fas fa-feather-alt welcome-icon"></i>
+                    <h2>欢迎使用内容管理中心</h2>
+                    <p>从左侧资源管理器选择一个分类来创建文章，或者创建新的分类来开始。</p>
+                    <div class="welcome-actions">
+                        <button class="btn btn-primary" onclick="openCreateCategoryModal()">
+                            <i class="fas fa-folder-plus"></i> 新建分类
+                        </button>
+                        <button class="btn btn-secondary" onclick="openDeployGuideModal()">
+                            <i class="fas fa-rocket"></i> 部署指南
+                        </button>
+                    </div>
+                    <div class="welcome-tips">
+                        <h4><i class="fas fa-lightbulb"></i> 快速提示</h4>
+                        <ul>
+                            <li>点击分类名称展开/折叠文章列表</li>
+                            <li>右键点击分类可以新建文章或删除分类</li>
+                            <li>点击文章名称进行编辑</li>
+                            <li>内容支持 Markdown 格式</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 编辑面板（创建/编辑文章时显示） -->
+            <div id="editor-panel" class="editor-panel-main" style="display: none;">
+                <div class="editor-tabs-bar">
+                    <div class="editor-tab-item active" id="current-editor-tab">
+                        <i class="fas fa-file-alt"></i>
+                        <span id="editor-tab-title">新建文章</span>
+                        <button class="tab-close" onclick="closeEditor()">&times;</button>
+                    </div>
+                </div>
+                
+                <div class="editor-form-container">
+                    <div class="editor-form">
+                        <!-- 文章基本信息 -->
+                        <div class="form-row">
+                            <div class="form-group flex-2">
+                                <label><i class="fas fa-heading"></i> 文章标题 *</label>
+                                <input type="text" id="article-title" class="form-input" placeholder="输入文章标题">
+                            </div>
+                            <div class="form-group flex-1">
+                                <label><i class="fas fa-folder"></i> 分类</label>
+                                <input type="text" id="article-category" class="form-input" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group flex-2">
+                                <label><i class="fas fa-tags"></i> 标签（逗号分隔）</label>
+                                <input type="text" id="article-tags" class="form-input" placeholder="如：React,JavaScript">
+                            </div>
+                            <div class="form-group flex-1">
+                                <label><i class="fas fa-calendar"></i> 发布时间 *</label>
+                                <input type="datetime-local" id="article-date" class="form-input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-align-left"></i> 文章摘要 *</label>
+                            <textarea id="article-excerpt" class="form-textarea" placeholder="简短的文章摘要" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 编辑器和预览 -->
+                    <div class="editor-preview-container">
+                        <div class="editor-wrapper">
+                            <div class="editor-label">
+                                <i class="fab fa-markdown"></i> Markdown 编辑
+                            </div>
+                            <textarea id="article-content" class="markdown-editor" placeholder="在这里输入 Markdown 内容..."></textarea>
+                        </div>
+                        <div class="preview-wrapper">
+                            <div class="preview-label">
+                                <i class="fas fa-eye"></i> 预览
+                                <button id="btn-toggle-preview" class="btn-icon" onclick="togglePreviewSize()">
+                                    <i class="fas fa-expand-arrows-alt"></i>
+                                </button>
+                            </div>
+                            <div id="article-preview" class="markdown-preview"></div>
+                        </div>
+                    </div>
+
+                    <!-- 编辑器按钮 -->
+                    <div class="editor-actions">
+                        <button id="btn-save-draft" class="btn btn-secondary">
+                            <i class="fas fa-save"></i> 保存草稿
+                        </button>
+                        <button id="btn-download" class="btn btn-primary">
+                            <i class="fas fa-download"></i> 下载 Markdown
+                        </button>
+                        <button id="btn-export-all" class="btn btn-secondary">
+                            <i class="fas fa-archive"></i> 批量导出
+                        </button>
+                        <button id="btn-deploy-guide" class="btn btn-info">
+                            <i class="fas fa-question-circle"></i> 如何部署
+                        </button>
+                        <button id="btn-reset" class="btn btn-light">
+                            <i class="fas fa-redo"></i> 重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 创建分类模态框 -->
+<div id="category-modal" class="modal" style="display: none;">
+    <div class="modal-content modal-md">
+        <div class="modal-header">
+            <h2><i class="fas fa-folder-plus"></i> <span id="category-modal-title">新建分类</span></h2>
+            <button class="btn-close" onclick="closeCategoryModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>分类名称 *</label>
+                <input type="text" id="modal-category-name" class="form-input" placeholder="如：前端开发">
+            </div>
+            <div class="form-group">
+                <label>分类描述</label>
+                <textarea id="modal-category-desc" class="form-textarea" placeholder="分类描述（可选）" rows="2"></textarea>
+            </div>
+            <p class="form-hint">
+                <i class="fas fa-info-circle"></i>
+                分类数据存储在浏览器本地，发布文章时会自动同步到 GitHub 仓库。
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeCategoryModal()">取消</button>
+            <button class="btn btn-primary" id="category-modal-submit" onclick="saveCategoryFromModal()">
+                <i class="fas fa-check"></i> 创建
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 右键菜单 -->
+<div id="context-menu" class="context-menu" style="display: none;">
+    <div class="context-menu-item" onclick="contextMenuNewArticle()">
+        <i class="fas fa-file-plus"></i> 新建文章
+    </div>
+    <div class="context-menu-item" onclick="contextMenuEditCategory()">
+        <i class="fas fa-edit"></i> 编辑分类
+    </div>
+    <div class="context-menu-divider"></div>
+    <div class="context-menu-item danger" onclick="contextMenuDeleteCategory()">
+        <i class="fas fa-trash"></i> 删除分类
+    </div>
+</div>
+
+<!-- 删除确认模态框 -->
+<div id="delete-confirm-modal" class="modal" style="display: none;">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h2><i class="fas fa-exclamation-triangle"></i> 确认删除</h2>
+            <button class="btn-close" onclick="closeDeleteModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p id="delete-confirm-message">确定要删除这个分类吗？</p>
+            <p class="form-hint warning">
+                <i class="fas fa-exclamation-circle"></i>
+                此操作将删除分类及其中的所有文章草稿，无法恢复。
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeDeleteModal()">取消</button>
+            <button class="btn btn-danger" onclick="confirmDelete()">
+                <i class="fas fa-trash"></i> 删除
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 部署指南模态框 -->
+<div id="deploy-guide-modal" class="modal" style="display: none;">
+    <div class="modal-content modal-lg">
+        <div class="modal-header">
+            <h2><i class="fas fa-rocket"></i> 部署指南</h2>
+            <button class="btn-close" onclick="closeDeployGuideModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="deploy-tabs">
+                <button class="deploy-tab active" onclick="showDeployTab('manual')">手动部署</button>
+                <button class="deploy-tab" onclick="showDeployTab('actions')">GitHub Actions</button>
+                <button class="deploy-tab" onclick="showDeployTab('cli')">命令行工具</button>
+            </div>
+            
+            <div id="deploy-manual" class="deploy-content active">
+                <h4><i class="fas fa-hand-paper"></i> 手动部署步骤</h4>
+                <ol class="deploy-steps">
+                    <li>点击<strong>"下载 Markdown"</strong>按钮保存文章文件</li>
+                    <li>将下载的 <code>.md</code> 文件上传到你的 GitHub 仓库的 <code>my-blog/source/_posts/</code> 目录</li>
+                    <li>在 GitHub 仓库页面，等待 GitHub Pages 自动重新构建（通常需要1-2分钟）</li>
+                    <li>访问你的博客网站查看新发布的文章</li>
+                </ol>
+                <div class="deploy-tip">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>提示：</strong>你也可以使用 GitHub Desktop 或 Git 命令行工具来上传文件。
+                </div>
+            </div>
+            
+            <div id="deploy-actions" class="deploy-content">
+                <h4><i class="fab fa-github"></i> GitHub Actions 自动化</h4>
+                <p>在你的仓库中创建 <code>.github/workflows/deploy.yml</code> 文件：</p>
+                <pre class="code-block">name: Deploy Hexo Blog
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        cd my-blog
+        npm install
+        
+    - name: Generate static files
+      run: |
+        cd my-blog
+        npx hexo generate
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./my-blog/public</pre>
+            </div>
+            
+            <div id="deploy-cli" class="deploy-content">
+                <h4><i class="fas fa-terminal"></i> 命令行部署</h4>
+                <p>如果你安装了 GitHub CLI，可以使用以下命令：</p>
+                <pre class="code-block"># 克隆仓库（如果还没有）
+gh repo clone 你的用户名/blogweb
+
+# 进入博客目录
+cd blogweb/my-blog/source/_posts/
+
+# 添加新文章文件
+# （将下载的 .md 文件复制到这里）
+
+# 提交并推送
+git add .
+git commit -m "添加新文章"
+git push origin main</pre>
+                <div class="deploy-tip">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>安装 GitHub CLI：</strong> 访问 <a href="https://cli.github.com/" target="_blank">https://cli.github.com/</a>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="closeDeployGuideModal()">知道了</button>
+        </div>
+    </div>
+</div>
+
+<!-- 通知提示 -->
+<div id="notification" class="notification" style="display: none;"></div>
+
+<!-- 注入网站数据 -->
+<script type="application/json" id="site-data">
+<%
+const siteData = {
+    categories: [],
+    posts: []
+};
+
+// 收集分类信息
+site.categories.forEach(function(category) {
+    siteData.categories.push({
+        name: category.name,
+        description: `${category.name}相关的文章分类`,
+        count: category.length,
+        path: category.path
+    });
+});
+
+// 收集文章信息
+site.posts.forEach(function(post) {
+    const categories = [];
+    post.categories.forEach(function(cat) {
+        categories.push(cat.name);
+    });
+    
+    const tags = [];
+    post.tags.forEach(function(tag) {
+        tags.push(tag.name);
+    });
+    
+    siteData.posts.push({
+        id: post._id,
+        title: post.title,
+        categories: categories,
+        tags: tags,
+        date: post.date.toISOString(),
+        excerpt: post.excerpt || '',
+        path: post.path,
+        content: post.raw || ''
+    });
+});
+%>
+<%- JSON.stringify(siteData) %>
+</script>
+
+<script>
+    window.blogRoot = "<%- config.root %>";
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@13/dist/markdown-it.min.js"></script>
+<script src="<%- config.root %>js/writer.js"></script>
+
+<%- partial('footer') %>

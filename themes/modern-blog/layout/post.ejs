@@ -1,0 +1,266 @@
+<div class="post-container github-markdown-style">
+    <article class="post-content">
+        <header class="post-header">
+            <div class="post-breadcrumb">
+                <a href="<%- config.root %>"><i class="fas fa-home"></i> 首页</a>
+                <span class="separator">/</span>
+                <% if (page.categories.length > 0) { %>
+                    <% page.categories.forEach(function(cat, idx) { %>
+                        <a href="<%- config.root %><%= cat.path %>"><%= cat.name %></a>
+                        <% if (idx < page.categories.length - 1) { %><span class="separator">/</span><% } %>
+                    <% }); %>
+                    <span class="separator">/</span>
+                <% } %>
+                <span class="current"><%= page.title %></span>
+            </div>
+            
+            <h1 class="post-title"><%= page.title %></h1>
+            
+            <div class="post-meta">
+                <div class="meta-info">
+                    <span class="meta-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span><%= date(page.date, 'YYYY年MM月DD日') %></span>
+                    </span>
+                    <% if (page.updated && page.updated !== page.date) { %>
+                        <span class="meta-item">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>更新于 <%= date(page.updated, 'YYYY年MM月DD日') %></span>
+                        </span>
+                    <% } %>
+                    <span class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span><%= Math.ceil(strip_html(page.content).length / 400) %> 分钟阅读</span>
+                    </span>
+                    <span class="meta-item">
+                        <i class="fas fa-file-word"></i>
+                        <span><%= strip_html(page.content).length %> 字</span>
+                    </span>
+                </div>
+                
+                <% if (page.tags.length > 0) { %>
+                    <div class="post-tags">
+                        <i class="fas fa-tags"></i>
+                        <% page.tags.forEach(function(tag) { %>
+                            <a href="<%- config.root %><%= tag.path %>" class="tag-badge">
+                                <i class="fas fa-tag"></i> <%= tag.name %>
+                            </a>
+                        <% }); %>
+                    </div>
+                <% } %>
+            </div>
+        </header>
+
+        <% if (page.excerpt) { %>
+            <div class="post-excerpt">
+                <div class="excerpt-icon"><i class="fas fa-quote-left"></i></div>
+                <div class="excerpt-content"><%- page.excerpt %></div>
+            </div>
+        <% } %>
+
+        <div class="post-body markdown-body">
+            <%- page.content %>
+        </div>
+
+        <footer class="post-footer">
+            <div class="post-copyright">
+                <div class="copyright-item">
+                    <span class="item-title">作者:</span>
+                    <span class="item-content"><%= config.author %></span>
+                </div>
+                <div class="copyright-item">
+                    <span class="item-title">发表于:</span>
+                    <span class="item-content"><%= date(page.date, 'YYYY年MM月DD日') %></span>
+                </div>
+                <div class="copyright-item">
+                    <span class="item-title">链接:</span>
+                    <span class="item-content"><a href="<%= config.url %><%- config.root %><%= page.path %>"><%= config.url %><%- config.root %><%= page.path %></a></span>
+                </div>
+            </div>
+            
+            <div class="post-nav">
+                <% if (page.prev) { %>
+                    <div class="nav-item nav-prev">
+                        <a href="<%- config.root %><%= page.prev.path %>">
+                            <div class="nav-direction"><i class="fas fa-chevron-left"></i> 上一篇</div>
+                            <div class="nav-title"><%= page.prev.title %></div>
+                        </a>
+                    </div>
+                <% } %>
+                <% if (page.next) { %>
+                    <div class="nav-item nav-next">
+                        <a href="<%- config.root %><%= page.next.path %>">
+                            <div class="nav-direction">下一篇 <i class="fas fa-chevron-right"></i></div>
+                            <div class="nav-title"><%= page.next.title %></div>
+                        </a>
+                    </div>
+                <% } %>
+            </div>
+        </footer>
+    </article>
+
+    <!-- 侧边栏 -->
+    <aside class="post-sidebar">
+        <div class="sidebar-sticky">
+            <div class="sidebar-widget toc-widget">
+                <h3 class="widget-title"><i class="fas fa-list-ul"></i> 文章目录</h3>
+                <nav class="table-of-contents">
+                    <%- toc(page.content, { list_number: false, min_depth: 2, max_depth: 4 }) %>
+                </nav>
+            </div>
+            
+            <% if (page.categories && page.categories.length > 0) { %>
+                <div class="sidebar-widget">
+                    <h3 class="widget-title"><i class="fas fa-folder-open"></i> 所属分类</h3>
+                    <div class="widget-content">
+                        <% page.categories.forEach(function(cat) { %>
+                            <a href="<%- config.root %><%= cat.path %>" class="category-badge">
+                                <i class="fas fa-folder"></i> <%= cat.name %>
+                            </a>
+                        <% }); %>
+                    </div>
+                </div>
+            <% } %>
+            
+            <div class="sidebar-widget share-widget">
+                <h3 class="widget-title"><i class="fas fa-share-alt"></i> 分享文章</h3>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent(page.title) %>&url=<%= encodeURIComponent(config.url + config.root + page.path) %>" 
+                       target="_blank" 
+                       class="share-btn twitter-share"
+                       title="分享到 Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="http://service.weibo.com/share/share.php?title=<%= encodeURIComponent(page.title) %>&url=<%= encodeURIComponent(config.url + config.root + page.path) %>" 
+                       target="_blank" 
+                       class="share-btn weibo-share"
+                       title="分享到微博">
+                        <i class="fab fa-weibo"></i>
+                    </a>
+                    <button class="share-btn copy-link" 
+                            data-url="<%= config.url %><%- config.root %><%= page.path %>"
+                            title="复制链接">
+                        <i class="fas fa-link"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script>
+// TOC滚动同步 - 高亮当前阅读的标题
+(function() {
+    const tocLinks = document.querySelectorAll('.table-of-contents a');
+    const headings = document.querySelectorAll('.post-body h2, .post-body h3, .post-body h4');
+    
+    if (tocLinks.length === 0 || headings.length === 0) return;
+    
+    // 创建观察器监听标题进入视口
+    const observerOptions = {
+        rootMargin: '-100px 0px -66%',
+        threshold: 0
+    };
+    
+    let activeLink = null;
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                if (id) {
+                    // 移除所有active类
+                    tocLinks.forEach(link => link.classList.remove('active'));
+                    // 添加active到当前链接
+                    const currentLink = document.querySelector(`.table-of-contents a[href="#${id}"]`);
+                    if (currentLink) {
+                        currentLink.classList.add('active');
+                        activeLink = currentLink;
+                    }
+                }
+            }
+        });
+    }, observerOptions);
+    
+    headings.forEach(heading => observer.observe(heading));
+    
+    // 点击TOC链接平滑滚动
+    tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+})();
+
+// 复制链接功能
+document.addEventListener('DOMContentLoaded', () => {
+    const copyBtn = document.querySelector('.copy-link');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            const url = copyBtn.getAttribute('data-url');
+            try {
+                await navigator.clipboard.writeText(url);
+                const originalIcon = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                copyBtn.style.color = '#28a745';
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalIcon;
+                    copyBtn.style.color = '';
+                }, 2000);
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败,请手动复制链接');
+            }
+        });
+    }
+    
+    // 代码块复制功能 - CSDN风格
+    const codeBlocks = document.querySelectorAll('.markdown-body pre');
+    codeBlocks.forEach((pre) => {
+        // 创建复制按钮
+        const copyButton = document.createElement('button');
+        copyButton.className = 'code-copy-btn';
+        copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+        copyButton.setAttribute('title', '复制代码');
+        
+        // 添加点击事件
+        copyButton.addEventListener('click', async () => {
+            const code = pre.querySelector('code');
+            const text = code ? code.innerText : pre.innerText;
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                copyButton.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                copyButton.classList.add('copied');
+                
+                setTimeout(() => {
+                    copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+                    copyButton.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('复制失败:', err);
+                copyButton.innerHTML = '<i class="fas fa-times"></i> 失败';
+                setTimeout(() => {
+                    copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+                }, 2000);
+            }
+        });
+        
+        pre.appendChild(copyButton);
+        
+        // 检测代码语言并添加标签
+        const code = pre.querySelector('code');
+        if (code && code.className) {
+            const langMatch = code.className.match(/language-(\w+)/);
+            if (langMatch) {
+                pre.setAttribute('data-lang', langMatch[1]);
+            }
+        }
+    });
+});
+</script>

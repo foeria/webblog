@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        
+            TypeScript 类型系统精通指南 - 编程博客
+        
+    </title>
+    <meta name="description" content="一个专注于前端、后端、技术分享的编程博客">
+    <link rel="stylesheet" href="/blog/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta name="generator" content="Hexo 8.1.1"></head>
+<body>
+    <div class="page-container">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <a href="/blog/">
+                <i class="fas fa-code"></i>
+                <span>编程博客</span>
+            </a>
+        </div>
+
+        <div class="nav-menu">
+            <a href="/blog/" class="nav-item ">
+                <i class="fas fa-home"></i> 首页
+            </a>
+            <a href="/blog/categories/" class="nav-item ">
+                <i class="fas fa-folder"></i> 分类
+            </a>
+            <a href="/blog/writer/" class="nav-item ">
+                <i class="fas fa-pen-fancy"></i> 写作
+            </a>
+            <a href="/blog/about/" class="nav-item ">
+                <i class="fas fa-user"></i> 关于
+            </a>
+        </div>
+
+        <div class="nav-search">
+            <div class="search-container">
+                <input type="text" class="search-input" id="search-input" placeholder="搜索文章...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-results" id="search-results" style="display: none;">
+                <div class="search-results-list"></div>
+            </div>
+        </div>
+
+        <button class="theme-toggle" id="theme-toggle" title="切换主题">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>
+
+
+        <!-- 主容器 -->
+        <main class="main-container">
+            <div class="post-container github-markdown-style">
+    <article class="post-content">
+        <header class="post-header">
+            <div class="post-breadcrumb">
+                <a href="/blog/"><i class="fas fa-home"></i> 首页</a>
+                <span class="separator">/</span>
+                
+                    
+                        <a href="/blog/categories/Skill/">Skill</a>
+                        
+                    
+                    <span class="separator">/</span>
+                
+                <span class="current">TypeScript 类型系统精通指南</span>
+            </div>
+            
+            <h1 class="post-title">TypeScript 类型系统精通指南</h1>
+            
+            <div class="post-meta">
+                <div class="meta-info">
+                    <span class="meta-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>2026年01月20日</span>
+                    </span>
+                    
+                        <span class="meta-item">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>更新于 2026年01月22日</span>
+                        </span>
+                    
+                    <span class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>3 分钟阅读</span>
+                    </span>
+                    <span class="meta-item">
+                        <i class="fas fa-file-word"></i>
+                        <span>883 字</span>
+                    </span>
+                </div>
+                
+                
+                    <div class="post-tags">
+                        <i class="fas fa-tags"></i>
+                        
+                            <a href="/blog/tags/TypeScript/" class="tag-badge">
+                                <i class="fas fa-tag"></i> TypeScript
+                            </a>
+                        
+                            <a href="/blog/tags/类型系统/" class="tag-badge">
+                                <i class="fas fa-tag"></i> 类型系统
+                            </a>
+                        
+                    </div>
+                
+            </div>
+        </header>
+
+        
+            <div class="post-excerpt">
+                <div class="excerpt-icon"><i class="fas fa-quote-left"></i></div>
+                <div class="excerpt-content">掌握 TypeScript 的类型系统，包括基础类型、泛型、交叉类型和条件类型等高级特性。</div>
+            </div>
+        
+
+        <div class="post-body markdown-body">
+            <h1 id="TypeScript-类型系统精通指南"><a href="#TypeScript-类型系统精通指南" class="headerlink" title="TypeScript 类型系统精通指南"></a>TypeScript 类型系统精通指南</h1><h2 id="基础类型"><a href="#基础类型" class="headerlink" title="基础类型"></a>基础类型</h2><h3 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">str</span>: <span class="built_in">string</span> = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">num</span>: <span class="built_in">number</span> = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">bool</span>: <span class="built_in">boolean</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">any</span>: <span class="built_in">any</span> = <span class="string">&quot;anything&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="泛型（Generics）"><a href="#泛型（Generics）" class="headerlink" title="泛型（Generics）"></a>泛型（Generics）</h2><h3 id="泛型函数"><a href="#泛型函数" class="headerlink" title="泛型函数"></a>泛型函数</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> identity&lt;T&gt;(<span class="attr">arg</span>: T): T &#123;</span><br><span class="line">  <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Container</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="attr">value</span>: T;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级类型"><a href="#高级类型" class="headerlink" title="高级类型"></a>高级类型</h2><h3 id="交叉类型（Intersection-Types）"><a href="#交叉类型（Intersection-Types）" class="headerlink" title="交叉类型（Intersection Types）"></a>交叉类型（Intersection Types）</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> A = &#123; <span class="attr">a</span>: <span class="built_in">string</span> &#125;;</span><br><span class="line"><span class="keyword">type</span> B = &#123; <span class="attr">b</span>: <span class="built_in">number</span> &#125;;</span><br><span class="line"><span class="keyword">type</span> C = A &amp; B; <span class="comment">// 同时具有 a 和 b</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="联合类型（Union-Types）"><a href="#联合类型（Union-Types）" class="headerlink" title="联合类型（Union Types）"></a>联合类型（Union Types）</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Status</span> = <span class="string">&quot;success&quot;</span> | <span class="string">&quot;error&quot;</span> | <span class="string">&quot;pending&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="条件类型"><a href="#条件类型" class="headerlink" title="条件类型"></a>条件类型</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">IsString</span>&lt;T&gt; = T <span class="keyword">extends</span> <span class="built_in">string</span> ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><ol>
+<li>始终为函数参数和返回值添加类型注解</li>
+<li>优先使用接口而不是类型别名（除非需要联合类型）</li>
+<li>避免过度使用 any 类型</li>
+<li>利用类型推断减少冗余的类型注解</li>
+</ol>
+<h2 id="工具类型"><a href="#工具类型" class="headerlink" title="工具类型"></a>工具类型</h2><ul>
+<li><code>Partial&lt;T&gt;</code> - 使所有属性可选</li>
+<li><code>Required&lt;T&gt;</code> - 使所有属性必需</li>
+<li><code>Readonly&lt;T&gt;</code> - 使所有属性只读</li>
+<li><code>Pick&lt;T, K&gt;</code> - 选择特定属性</li>
+<li><code>Omit&lt;T, K&gt;</code> - 排除特定属性</li>
+<li><code>Record&lt;K, T&gt;</code> - 创建对象类型</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>TypeScript 的类型系统是其最强大的特性，能够帮助我们编写更安全、更易维护的代码。</p>
+
+        </div>
+
+        <footer class="post-footer">
+            <div class="post-copyright">
+                <div class="copyright-item">
+                    <span class="item-title">作者:</span>
+                    <span class="item-content">Your Name</span>
+                </div>
+                <div class="copyright-item">
+                    <span class="item-title">发表于:</span>
+                    <span class="item-content">2026年01月20日</span>
+                </div>
+                <div class="copyright-item">
+                    <span class="item-title">链接:</span>
+                    <span class="item-content"><a href="https://username.github.io/blog/blog/2026/01/20/typescript-skill/">https://username.github.io/blog/blog/2026/01/20/typescript-skill/</a></span>
+                </div>
+            </div>
+            
+            <div class="post-nav">
+                
+                    <div class="nav-item nav-prev">
+                        <a href="/blog/2026/01/20/nodejs-async-best-practices/">
+                            <div class="nav-direction"><i class="fas fa-chevron-left"></i> 上一篇</div>
+                            <div class="nav-title">Node.js 异步编程最佳实践</div>
+                        </a>
+                    </div>
+                
+                
+                    <div class="nav-item nav-next">
+                        <a href="/blog/2026/01/19/javascript-performance-issues/">
+                            <div class="nav-direction">下一篇 <i class="fas fa-chevron-right"></i></div>
+                            <div class="nav-title">常见 JavaScript 性能问题排查</div>
+                        </a>
+                    </div>
+                
+            </div>
+        </footer>
+    </article>
+
+    <!-- 侧边栏 -->
+    <aside class="post-sidebar">
+        <div class="sidebar-sticky">
+            <div class="sidebar-widget toc-widget">
+                <h3 class="widget-title"><i class="fas fa-list-ul"></i> 文章目录</h3>
+                <nav class="table-of-contents">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%B1%BB%E5%9E%8B"><span class="toc-text">基础类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="toc-text">基本类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%EF%BC%88Generics%EF%BC%89"><span class="toc-text">泛型（Generics）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E5%87%BD%E6%95%B0"><span class="toc-text">泛型函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E6%8E%A5%E5%8F%A3"><span class="toc-text">泛型接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E7%B1%BB%E5%9E%8B"><span class="toc-text">高级类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E5%8F%89%E7%B1%BB%E5%9E%8B%EF%BC%88Intersection-Types%EF%BC%89"><span class="toc-text">交叉类型（Intersection Types）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%94%E5%90%88%E7%B1%BB%E5%9E%8B%EF%BC%88Union-Types%EF%BC%89"><span class="toc-text">联合类型（Union Types）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="toc-text">条件类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">最佳实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E7%B1%BB%E5%9E%8B"><span class="toc-text">工具类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+                </nav>
+            </div>
+            
+            
+                <div class="sidebar-widget">
+                    <h3 class="widget-title"><i class="fas fa-folder-open"></i> 所属分类</h3>
+                    <div class="widget-content">
+                        
+                            <a href="/blog/categories/Skill/" class="category-badge">
+                                <i class="fas fa-folder"></i> Skill
+                            </a>
+                        
+                    </div>
+                </div>
+            
+            
+            <div class="sidebar-widget share-widget">
+                <h3 class="widget-title"><i class="fas fa-share-alt"></i> 分享文章</h3>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?text=TypeScript%20%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F%E7%B2%BE%E9%80%9A%E6%8C%87%E5%8D%97&url=https%3A%2F%2Fusername.github.io%2Fblog%2Fblog%2F2026%2F01%2F20%2Ftypescript-skill%2F" 
+                       target="_blank" 
+                       class="share-btn twitter-share"
+                       title="分享到 Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="http://service.weibo.com/share/share.php?title=TypeScript%20%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F%E7%B2%BE%E9%80%9A%E6%8C%87%E5%8D%97&url=https%3A%2F%2Fusername.github.io%2Fblog%2Fblog%2F2026%2F01%2F20%2Ftypescript-skill%2F" 
+                       target="_blank" 
+                       class="share-btn weibo-share"
+                       title="分享到微博">
+                        <i class="fab fa-weibo"></i>
+                    </a>
+                    <button class="share-btn copy-link" 
+                            data-url="https://username.github.io/blog/blog/2026/01/20/typescript-skill/"
+                            title="复制链接">
+                        <i class="fas fa-link"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script>
+// TOC滚动同步 - 高亮当前阅读的标题
+(function() {
+    const tocLinks = document.querySelectorAll('.table-of-contents a');
+    const headings = document.querySelectorAll('.post-body h2, .post-body h3, .post-body h4');
+    
+    if (tocLinks.length === 0 || headings.length === 0) return;
+    
+    // 创建观察器监听标题进入视口
+    const observerOptions = {
+        rootMargin: '-100px 0px -66%',
+        threshold: 0
+    };
+    
+    let activeLink = null;
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                if (id) {
+                    // 移除所有active类
+                    tocLinks.forEach(link => link.classList.remove('active'));
+                    // 添加active到当前链接
+                    const currentLink = document.querySelector(`.table-of-contents a[href="#${id}"]`);
+                    if (currentLink) {
+                        currentLink.classList.add('active');
+                        activeLink = currentLink;
+                    }
+                }
+            }
+        });
+    }, observerOptions);
+    
+    headings.forEach(heading => observer.observe(heading));
+    
+    // 点击TOC链接平滑滚动
+    tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+})();
+
+// 复制链接功能
+document.addEventListener('DOMContentLoaded', () => {
+    const copyBtn = document.querySelector('.copy-link');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            const url = copyBtn.getAttribute('data-url');
+            try {
+                await navigator.clipboard.writeText(url);
+                const originalIcon = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                copyBtn.style.color = '#28a745';
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalIcon;
+                    copyBtn.style.color = '';
+                }, 2000);
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败,请手动复制链接');
+            }
+        });
+    }
+    
+    // 代码块复制功能 - CSDN风格
+    const codeBlocks = document.querySelectorAll('.markdown-body pre');
+    codeBlocks.forEach((pre) => {
+        // 创建复制按钮
+        const copyButton = document.createElement('button');
+        copyButton.className = 'code-copy-btn';
+        copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+        copyButton.setAttribute('title', '复制代码');
+        
+        // 添加点击事件
+        copyButton.addEventListener('click', async () => {
+            const code = pre.querySelector('code');
+            const text = code ? code.innerText : pre.innerText;
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                copyButton.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                copyButton.classList.add('copied');
+                
+                setTimeout(() => {
+                    copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+                    copyButton.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('复制失败:', err);
+                copyButton.innerHTML = '<i class="fas fa-times"></i> 失败';
+                setTimeout(() => {
+                    copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+                }, 2000);
+            }
+        });
+        
+        pre.appendChild(copyButton);
+        
+        // 检测代码语言并添加标签
+        const code = pre.querySelector('code');
+        if (code && code.className) {
+            const langMatch = code.className.match(/language-(\w+)/);
+            if (langMatch) {
+                pre.setAttribute('data-lang', langMatch[1]);
+            }
+        }
+    });
+});
+</script>
+
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>关于我</h4>
+            <p>热爱编程和分享的开发者，致力于创建高质量的技术内容。</p>
+            <div class="social-links">
+                <a href="#" title="GitHub" class="social-icon">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" title="Twitter" class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" title="邮箱" class="social-icon">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>快速导航</h4>
+            <ul class="footer-links">
+                <li><a href="/blog/">首页</a></li>
+                <li><a href="/blog/categories/">分类</a></li>
+                <li><a href="/blog/tags/">标签</a></li>
+                <li><a href="/blog/archives/">归档</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>最新分类</h4>
+            <ul class="footer-links">
+                <li><a href="/blog/categories/前端开发/">前端开发</a></li>
+                <li><a href="/blog/categories/后端开发/">后端开发</a></li>
+                <li><a href="/blog/categories/技术分享/">技术分享</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>订阅</h4>
+            <p>订阅我的博客，获取最新文章更新</p>
+            <form class="subscribe-form">
+                <input type="email" placeholder="输入您的邮箱" required>
+                <button type="submit">订阅</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 编程博客. All Rights Reserved.</p>
+        <p>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> & 
+            <a href="#">Modern Blog Theme</a>
+        </p>
+    </div>
+</footer>
+
+    </div>
+
+    <script src="/blog/js/theme-switcher.js"></script>
+    <script src="/blog/js/main.js"></script>
+</body>
+</html>

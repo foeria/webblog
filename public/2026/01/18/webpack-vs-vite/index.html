@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        
+            前端构建工具对比：Webpack vs Vite - 编程博客
+        
+    </title>
+    <meta name="description" content="一个专注于前端、后端、技术分享的编程博客">
+    <link rel="stylesheet" href="/blog/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta name="generator" content="Hexo 8.1.1"></head>
+<body>
+    <div class="page-container">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <a href="/blog/">
+                <i class="fas fa-code"></i>
+                <span>编程博客</span>
+            </a>
+        </div>
+
+        <div class="nav-menu">
+            <a href="/blog/" class="nav-item ">
+                <i class="fas fa-home"></i> 首页
+            </a>
+            <a href="/blog/categories/" class="nav-item ">
+                <i class="fas fa-folder"></i> 分类
+            </a>
+            <a href="/blog/writer/" class="nav-item ">
+                <i class="fas fa-pen-fancy"></i> 写作
+            </a>
+            <a href="/blog/about/" class="nav-item ">
+                <i class="fas fa-user"></i> 关于
+            </a>
+        </div>
+
+        <div class="nav-search">
+            <div class="search-container">
+                <input type="text" class="search-input" id="search-input" placeholder="搜索文章...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-results" id="search-results" style="display: none;">
+                <div class="search-results-list"></div>
+            </div>
+        </div>
+
+        <button class="theme-toggle" id="theme-toggle" title="切换主题">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>
+
+
+        <!-- 主容器 -->
+        <main class="main-container">
+            <div class="post-container github-markdown-style">
+    <article class="post-content">
+        <header class="post-header">
+            <div class="post-breadcrumb">
+                <a href="/blog/"><i class="fas fa-home"></i> 首页</a>
+                <span class="separator">/</span>
+                
+                    
+                        <a href="/blog/categories/技术分享/">技术分享</a>
+                        
+                    
+                    <span class="separator">/</span>
+                
+                <span class="current">前端构建工具对比：Webpack vs Vite</span>
+            </div>
+            
+            <h1 class="post-title">前端构建工具对比：Webpack vs Vite</h1>
+            
+            <div class="post-meta">
+                <div class="meta-info">
+                    <span class="meta-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>2026年01月18日</span>
+                    </span>
+                    
+                        <span class="meta-item">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>更新于 2026年01月21日</span>
+                        </span>
+                    
+                    <span class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>2 分钟阅读</span>
+                    </span>
+                    <span class="meta-item">
+                        <i class="fas fa-file-word"></i>
+                        <span>501 字</span>
+                    </span>
+                </div>
+                
+                
+                    <div class="post-tags">
+                        <i class="fas fa-tags"></i>
+                        
+                            <a href="/blog/tags/Webpack/" class="tag-badge">
+                                <i class="fas fa-tag"></i> Webpack
+                            </a>
+                        
+                            <a href="/blog/tags/Vite/" class="tag-badge">
+                                <i class="fas fa-tag"></i> Vite
+                            </a>
+                        
+                            <a href="/blog/tags/前端构建/" class="tag-badge">
+                                <i class="fas fa-tag"></i> 前端构建
+                            </a>
+                        
+                    </div>
+                
+            </div>
+        </header>
+
+        
+            <div class="post-excerpt">
+                <div class="excerpt-icon"><i class="fas fa-quote-left"></i></div>
+                <div class="excerpt-content">对比两个流行的前端构建工具 Webpack 和 Vite，分析它们的优缺点以及如何选择最适合的工具。</div>
+            </div>
+        
+
+        <div class="post-body markdown-body">
+            <h1 id="前端构建工具对比：Webpack-vs-Vite"><a href="#前端构建工具对比：Webpack-vs-Vite" class="headerlink" title="前端构建工具对比：Webpack vs Vite"></a>前端构建工具对比：Webpack vs Vite</h1><h2 id="Webpack"><a href="#Webpack" class="headerlink" title="Webpack"></a>Webpack</h2><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>成熟稳定</li>
+<li>生态丰富</li>
+<li>功能强大</li>
+</ul>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>插件生态完整</li>
+<li>支持各种资源类型</li>
+<li>配置灵活</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>配置复杂</li>
+<li>冷启动慢</li>
+<li>构建速度较慢</li>
+</ul>
+<h2 id="Vite"><a href="#Vite" class="headerlink" title="Vite"></a>Vite</h2><h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>基于 ES 模块</li>
+<li>快速开发服务器</li>
+<li>按需编译</li>
+</ul>
+<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 快速的热模块替换 (HMR)</span></span><br><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">createApp</span>(<span class="title class_">App</span>).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>开发服务器启动快</li>
+<li>HMR 响应快</li>
+<li>构建速度快</li>
+</ul>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>生态不如 Webpack 丰富</li>
+<li>IE 支持有限</li>
+<li>社区问题较少</li>
+</ul>
+<h2 id="对比表格"><a href="#对比表格" class="headerlink" title="对比表格"></a>对比表格</h2><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Webpack</th>
+<th>Vite</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>冷启动</td>
+<td>慢</td>
+<td>快</td>
+</tr>
+<tr>
+<td>HMR</td>
+<td>中等</td>
+<td>快</td>
+</tr>
+<tr>
+<td>生态</td>
+<td>丰富</td>
+<td>发展中</td>
+</tr>
+<tr>
+<td>学习曲线</td>
+<td>陡峭</td>
+<td>温和</td>
+</tr>
+<tr>
+<td>生产构建</td>
+<td>稳定</td>
+<td>高效</td>
+</tr>
+</tbody></table>
+<h2 id="选择建议"><a href="#选择建议" class="headerlink" title="选择建议"></a>选择建议</h2><ul>
+<li><strong>新项目</strong> → Vite</li>
+<li><strong>大型项目</strong> → Webpack（需要高度定制）</li>
+<li><strong>迁移项目</strong> → 根据需求灵活选择</li>
+</ul>
+<hr>
+<p>选择合适的构建工具可以显著提升开发体验！</p>
+
+        </div>
+
+        <footer class="post-footer">
+            <div class="post-copyright">
+                <div class="copyright-item">
+                    <span class="item-title">作者:</span>
+                    <span class="item-content">Your Name</span>
+                </div>
+                <div class="copyright-item">
+                    <span class="item-title">发表于:</span>
+                    <span class="item-content">2026年01月18日</span>
+                </div>
+                <div class="copyright-item">
+                    <span class="item-title">链接:</span>
+                    <span class="item-content"><a href="https://username.github.io/blog/blog/2026/01/18/webpack-vs-vite/">https://username.github.io/blog/blog/2026/01/18/webpack-vs-vite/</a></span>
+                </div>
+            </div>
+            
+            <div class="post-nav">
+                
+                    <div class="nav-item nav-prev">
+                        <a href="/blog/2026/01/19/performance-optimization-skill/">
+                            <div class="nav-direction"><i class="fas fa-chevron-left"></i> 上一篇</div>
+                            <div class="nav-title">性能优化完全手册</div>
+                        </a>
+                    </div>
+                
+                
+            </div>
+        </footer>
+    </article>
+
+    <!-- 侧边栏 -->
+    <aside class="post-sidebar">
+        <div class="sidebar-sticky">
+            <div class="sidebar-widget toc-widget">
+                <h3 class="widget-title"><i class="fas fa-list-ul"></i> 文章目录</h3>
+                <nav class="table-of-contents">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Webpack"><span class="toc-text">Webpack</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-text">特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vite"><span class="toc-text">Vite</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E7%82%B9-1"><span class="toc-text">特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E7%82%B9-1"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9-1"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94%E8%A1%A8%E6%A0%BC"><span class="toc-text">对比表格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E5%BB%BA%E8%AE%AE"><span class="toc-text">选择建议</span></a></li></ol>
+                </nav>
+            </div>
+            
+            
+                <div class="sidebar-widget">
+                    <h3 class="widget-title"><i class="fas fa-folder-open"></i> 所属分类</h3>
+                    <div class="widget-content">
+                        
+                            <a href="/blog/categories/技术分享/" class="category-badge">
+                                <i class="fas fa-folder"></i> 技术分享
+                            </a>
+                        
+                    </div>
+                </div>
+            
+            
+            <div class="sidebar-widget share-widget">
+                <h3 class="widget-title"><i class="fas fa-share-alt"></i> 分享文章</h3>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?text=%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E5%AF%B9%E6%AF%94%EF%BC%9AWebpack%20vs%20Vite&url=https%3A%2F%2Fusername.github.io%2Fblog%2Fblog%2F2026%2F01%2F18%2Fwebpack-vs-vite%2F" 
+                       target="_blank" 
+                       class="share-btn twitter-share"
+                       title="分享到 Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="http://service.weibo.com/share/share.php?title=%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E5%AF%B9%E6%AF%94%EF%BC%9AWebpack%20vs%20Vite&url=https%3A%2F%2Fusername.github.io%2Fblog%2Fblog%2F2026%2F01%2F18%2Fwebpack-vs-vite%2F" 
+                       target="_blank" 
+                       class="share-btn weibo-share"
+                       title="分享到微博">
+                        <i class="fab fa-weibo"></i>
+                    </a>
+                    <button class="share-btn copy-link" 
+                            data-url="https://username.github.io/blog/blog/2026/01/18/webpack-vs-vite/"
+                            title="复制链接">
+                        <i class="fas fa-link"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script>
+// TOC滚动同步 - 高亮当前阅读的标题
+(function() {
+    const tocLinks = document.querySelectorAll('.table-of-contents a');
+    const headings = document.querySelectorAll('.post-body h2, .post-body h3, .post-body h4');
+    
+    if (tocLinks.length === 0 || headings.length === 0) return;
+    
+    // 创建观察器监听标题进入视口
+    const observerOptions = {
+        rootMargin: '-100px 0px -66%',
+        threshold: 0
+    };
+    
+    let activeLink = null;
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                if (id) {
+                    // 移除所有active类
+                    tocLinks.forEach(link => link.classList.remove('active'));
+                    // 添加active到当前链接
+                    const currentLink = document.querySelector(`.table-of-contents a[href="#${id}"]`);
+                    if (currentLink) {
+                        currentLink.classList.add('active');
+                        activeLink = currentLink;
+                    }
+                }
+            }
+        });
+    }, observerOptions);
+    
+    headings.forEach(heading => observer.observe(heading));
+    
+    // 点击TOC链接平滑滚动
+    tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+})();
+
+// 复制链接功能
+document.addEventListener('DOMContentLoaded', () => {
+    const copyBtn = document.querySelector('.copy-link');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            const url = copyBtn.getAttribute('data-url');
+            try {
+                await navigator.clipboard.writeText(url);
+                const originalIcon = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                copyBtn.style.color = '#28a745';
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalIcon;
+                    copyBtn.style.color = '';
+                }, 2000);
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败,请手动复制链接');
+            }
+        });
+    }
+    
+    // 代码块复制功能 - CSDN风格
+    const codeBlocks = document.querySelectorAll('.markdown-body pre');
+    codeBlocks.forEach((pre) => {
+        // 创建复制按钮
+        const copyButton = document.createElement('button');
+        copyButton.className = 'code-copy-btn';
+        copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+        copyButton.setAttribute('title', '复制代码');
+        
+        // 添加点击事件
+        copyButton.addEventListener('click', async () => {
+            const code = pre.querySelector('code');
+            const text = code ? code.innerText : pre.innerText;
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                copyButton.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                copyButton.classList.add('copied');
+                
+                setTimeout(() => {
+                    copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+                    copyButton.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('复制失败:', err);
+                copyButton.innerHTML = '<i class="fas fa-times"></i> 失败';
+                setTimeout(() => {
+                    copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+                }, 2000);
+            }
+        });
+        
+        pre.appendChild(copyButton);
+        
+        // 检测代码语言并添加标签
+        const code = pre.querySelector('code');
+        if (code && code.className) {
+            const langMatch = code.className.match(/language-(\w+)/);
+            if (langMatch) {
+                pre.setAttribute('data-lang', langMatch[1]);
+            }
+        }
+    });
+});
+</script>
+
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>关于我</h4>
+            <p>热爱编程和分享的开发者，致力于创建高质量的技术内容。</p>
+            <div class="social-links">
+                <a href="#" title="GitHub" class="social-icon">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" title="Twitter" class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" title="邮箱" class="social-icon">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>快速导航</h4>
+            <ul class="footer-links">
+                <li><a href="/blog/">首页</a></li>
+                <li><a href="/blog/categories/">分类</a></li>
+                <li><a href="/blog/tags/">标签</a></li>
+                <li><a href="/blog/archives/">归档</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>最新分类</h4>
+            <ul class="footer-links">
+                <li><a href="/blog/categories/前端开发/">前端开发</a></li>
+                <li><a href="/blog/categories/后端开发/">后端开发</a></li>
+                <li><a href="/blog/categories/技术分享/">技术分享</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>订阅</h4>
+            <p>订阅我的博客，获取最新文章更新</p>
+            <form class="subscribe-form">
+                <input type="email" placeholder="输入您的邮箱" required>
+                <button type="submit">订阅</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 编程博客. All Rights Reserved.</p>
+        <p>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> & 
+            <a href="#">Modern Blog Theme</a>
+        </p>
+    </div>
+</footer>
+
+    </div>
+
+    <script src="/blog/js/theme-switcher.js"></script>
+    <script src="/blog/js/main.js"></script>
+</body>
+</html>

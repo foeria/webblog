@@ -1,0 +1,56 @@
+<div class="about-container">
+    <header class="about-header">
+        <h1 class="about-title">
+            <i class="fas fa-user-circle"></i>
+            关于我
+        </h1>
+    </header>
+
+    <div class="about-content">
+        <div class="about-text">
+            <%- page.content %>
+        </div>
+
+        <!-- 博客统计 -->
+        <div class="blog-stats">
+            <h2>博客统计</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number"><%= site.posts.length %></div>
+                    <div class="stat-label">文章总数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number"><%= site.categories.length %></div>
+                    <div class="stat-label">分类数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number"><%= site.tags.length %></div>
+                    <div class="stat-label">标签数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number"><%= moment().format('YYYY') %></div>
+                    <div class="stat-label">创建年份</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 联系方式 -->
+        <div class="contact-section">
+            <h2>联系我</h2>
+            <div class="contact-info">
+                <p>如果你有任何问题、建议或合作机会，欢迎通过以下方式与我联系：</p>
+                <div class="contact-links">
+                    <a href="mailto:your-email@example.com" class="contact-link">
+                        <i class="fas fa-envelope"></i> 发送邮件
+                    </a>
+                    <a href="https://github.com/yourusername" class="contact-link" target="_blank">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                    <a href="https://twitter.com/yourusername" class="contact-link" target="_blank">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

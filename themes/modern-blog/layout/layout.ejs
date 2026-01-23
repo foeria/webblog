@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        <% if (page.title) { %>
+            <%= page.title %> - <%= config.title %>
+        <% } else { %>
+            <%= config.title %>
+        <% } %>
+    </title>
+    <meta name="description" content="<%= config.description %>">
+    <link rel="stylesheet" href="<%- url_for('css/style.css') %>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="page-container">
+        <!-- 导航栏 -->
+        <%- partial('nav') %>
+
+        <!-- 主容器 -->
+        <main class="main-container">
+            <%- body %>
+        </main>
+
+        <!-- 页脚 -->
+        <%- partial('footer') %>
+    </div>
+
+    <script src="<%- url_for('js/theme-switcher.js') %>"></script>
+    <script src="<%- url_for('js/main.js') %>"></script>
+</body>
+</html>

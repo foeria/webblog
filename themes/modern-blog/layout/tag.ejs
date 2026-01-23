@@ -1,0 +1,46 @@
+<div class="archive-container">
+    <header class="archive-header">
+        <h1 class="archive-title">
+            <i class="fas fa-tag"></i>
+            <%= page.tag %>
+        </h1>
+        <p class="archive-count">共 <%= page.posts.length %> 篇文章</p>
+    </header>
+
+    <div class="posts-list">
+        <% page.posts.each(function(post) { %>
+            <article class="post-card">
+                <div class="post-header">
+                    <h3 class="post-title">
+                        <a href="<%= config.root %><%= post.path %>"><%= post.title %></a>
+                    </h3>
+                    <div class="post-meta">
+                        <span class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <%= date(post.date, 'YYYY-MM-DD') %>
+                        </span>
+                        <% if (post.categories.length > 0) { %>
+                            <span class="meta-item">
+                                <i class="fas fa-folder"></i>
+                                <% post.categories.forEach(function(cat, idx) { %>
+                                    <a href="<%= config.root %><%= cat.path %>" class="category-link"><%= cat.name %></a>
+                                    <% if (idx < post.categories.length - 1) { %>，<% } %>
+                                <% }); %>
+                            </span>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="post-excerpt">
+                    <% if (post.excerpt) { %>
+                        <%= post.excerpt %>
+                    <% } else { %>
+                        <%= post.content.substring(0, 150) %>...
+                    <% } %>
+                </div>
+                <div class="post-footer">
+                    <a href="<%= config.root %><%= post.path %>" class="read-more">阅读全文 →</a>
+                </div>
+            </article>
+        <% }); %>
+    </div>
+</div>

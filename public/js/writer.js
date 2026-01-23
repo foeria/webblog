@@ -452,9 +452,11 @@ function openNewArticleEditor(categoryName) {
 // 查看网站中的文章（只读）
 function viewSiteArticle(articlePath) {
     if (articlePath) {
-        // 在新标签页中打开文章
-        const baseUrl = window.location.origin + window.location.pathname.replace('/writer/', '');
-        const articleUrl = baseUrl + articlePath;
+        // 在新标签页中打开文章，确保带上站点根路径
+        const siteRoot = window.blogRoot || '/';
+        const normalizedRoot = siteRoot.endsWith('/') ? siteRoot : siteRoot + '/';
+        const sanitizedPath = articlePath.replace(/^\/+/, '');
+        const articleUrl = `${window.location.origin}${normalizedRoot}${sanitizedPath}`;
         window.open(articleUrl, '_blank');
     } else {
         showNotification('无法打开文章链接', 'error');

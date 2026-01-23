@@ -66,7 +66,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "${{ job.status }}" = "success" ]; then
             echo "✅ 部署成功！" >> $GITHUB_STEP_SUMMARY
-            echo "📺 访问地址: https://${{ github.repository_owner }}.github.io/blog/" >> $GITHUB_STEP_SUMMARY
+            echo "📺 访问地址: https://${{ github.repository_owner }}.github.io/webblog/" >> $GITHUB_STEP_SUMMARY
           else
             echo "❌ 部署失败，请查看日志" >> $GITHUB_STEP_SUMMARY
           fi

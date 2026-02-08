@@ -28,6 +28,13 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeEditor();
     setupEventListeners();
     hideContextMenu();
+
+    // 自动保存功能 (每1分钟)
+    setInterval(() => {
+        if (document.getElementById('editor-panel').style.display !== 'none' && currentArticle) {
+            saveDraft();
+        }
+    }, 60000);
 });
 
 // ========== 资源管理器初始化 ==========
@@ -448,6 +455,11 @@ function openNewArticleEditor(categoryName) {
     // 设置当前时间
     const now = new Date();
     document.getElementById('article-date').value = now.toISOString().slice(0, 16);
+
+    // 重置统计和状态
+    updateStatistics();
+    const statusEl = document.getElementById('save-status');
+    if (statusEl) statusEl.innerHTML = '<i class="fas fa-edit"></i> 正在撰写新文章';
 }
 // 查看网站中的文章（只读）
 function viewSiteArticle(articlePath) {
@@ -489,6 +501,10 @@ function openArticleEditor(articleId) {
     document.getElementById('editor-tab-title').textContent = article.title || '编辑文章';
     
     updatePreview();
+    updateStatistics();
+    if (document.getElementById('toc-panel').style.display !== 'none') {
+        updateTOC();
+    }
 }
 
 // 关闭编辑器
@@ -505,7 +521,20 @@ function closeEditor() {
 function initializeEditor() {
     const contentEditor = document.getElementById('article-content');
     if (contentEditor) {
-        contentEditor.addEventListener('input', updatePreview);
+        contentEditor.addEventListener('input', function() {
+            updatePreview();
+            updateStatistics();
+            if (document.getElementById('toc-panel').style.display !== 'none') {
+                updateTOC();
+            }
+        });
+        
+        contentEditor.addEventListener('scroll', handleEditorScroll);
+        
+        // 光标位置
+        contentEditor.addEventListener('keyup', updateCursorPos);
+        contentEditor.addEventListener('mouseup', updateCursorPos);
+        contentEditor.addEventListener('click', updateCursorPos);
     }
 }
 
@@ -553,10 +582,48 @@ function setupEventListeners() {
     // ESC键关闭模态框
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
+            if (document.body.classList.contains('zen-mode')) {
+                toggleZenMode();
+                return;
+            }
             document.querySelectorAll('.modal').forEach(modal => {
                 modal.style.display = 'none';
             });
             hideContextMenu();
+        }
+        
+        // 快捷键支持
+        if (e.ctrlKey || e.metaKey) {
+            switch (e.key.toLowerCase()) {
+                case 's':
+                    e.preventDefault();
+                    saveDraft();
+                    break;
+                case 'b':
+                    e.preventDefault();
+                    insertMarkdown('bold');
+                    break;
+                case 'i':
+                    e.preventDefault();
+                    insertMarkdown('italic');
+                    break;
+                case 'h':
+                    e.preventDefault();
+                    insertMarkdown('heading');
+                    break;
+                case 'l':
+                    e.preventDefault();
+                    insertMarkdown('link');
+                    break;
+                case 'g':
+                    e.preventDefault();
+                    insertMarkdown('image');
+                    break;
+                case 'k':
+                    e.preventDefault();
+                    insertMarkdown('code');
+                    break;
+            }
         }
     });
 }
@@ -607,10 +674,16 @@ function getFormData() {
 
 // 保存草稿
 function saveDraft() {
+    const statusEl = document.getElementById('save-status');
+    if (statusEl) {
+        statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在保存...';
+    }
+
     const article = getFormData();
     
     if (!article.title.trim()) {
         showNotification('请输入文章标题', 'warning');
+        if (statusEl) statusEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> 保存失败';
         return;
     }
     
@@ -638,6 +711,14 @@ function saveDraft() {
     currentArticle = article;
     
     showNotification('草稿已保存', 'success');
+    
+    const statusEl = document.getElementById('save-status');
+    if (statusEl) {
+        const now = new Date();
+        const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        statusEl.innerHTML = `<i class="fas fa-check-circle"></i> 已保存 (${timeStr})`;
+    }
+    
     renderExplorerTree();
     document.getElementById('editor-tab-title').textContent = article.title;
 }
@@ -849,3 +930,176 @@ function showNotification(message, type = 'info') {
         notification.style.display = 'none';
     }, 3000);
 }
+
+// ========== 增强功能：工具栏与统计 ==========
+
+// 插入 Markdown 格式
+function insertMarkdown(type) {
+    const editor = document.getElementById('article-content');
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const text = editor.value;
+    const selectedText = text.substring(start, end);
+    let newText = '';
+    let cursorOffset = 0;
+
+    switch (type) {
+        case 'bold':
+            newText = `**${selectedText || '加粗文字'}**`;
+            cursorOffset = selectedText ? newText.length : 2;
+            break;
+        case 'italic':
+            newText = `*${selectedText || '斜体文字'}*`;
+            cursorOffset = selectedText ? newText.length : 1;
+            break;
+        case 'heading':
+            newText = `\n### ${selectedText || '标题'}\n`;
+            cursorOffset = newText.length;
+            break;
+        case 'link':
+            newText = `[${selectedText || '链接描述'}](https://)`;
+            cursorOffset = selectedText ? newText.length - 1 : 1;
+            break;
+        case 'image':
+            newText = `![${selectedText || '图片描述'}](https://)`;
+            cursorOffset = selectedText ? newText.length - 1 : 2;
+            break;
+        case 'code':
+            newText = `\n\`\`\`javascript\n${selectedText || 'console.log("hello");'}\n\`\`\`\n`;
+            cursorOffset = newText.length;
+            break;
+        case 'list-ul':
+            newText = `\n- ${selectedText || '列表项'}`;
+            cursorOffset = newText.length;
+            break;
+        case 'list-ol':
+            newText = `\n1. ${selectedText || '列表项'}`;
+            cursorOffset = newText.length;
+            break;
+        case 'quote':
+            newText = `\n> ${selectedText || '引用文字'}`;
+            cursorOffset = newText.length;
+            break;
+        case 'hr':
+            newText = `\n---\n`;
+            cursorOffset = newText.length;
+            break;
+        case 'table':
+            newText = `\n| 标题1 | 标题2 |\n| --- | --- |\n| 内容1 | 内容2 |\n`;
+            cursorOffset = newText.length;
+            break;
+    }
+
+    editor.value = text.substring(0, start) + newText + text.substring(end);
+    editor.focus();
+    
+    // 重新设置光标位置
+    const newPos = start + cursorOffset;
+    editor.setSelectionRange(newPos, newPos);
+    
+    updatePreview();
+}
+
+// 更新统计信息
+function updateStatistics() {
+    const content = document.getElementById('article-content').value;
+    const wordCount = content.replace(/[^\x00-\xff]/g, "xx").length; // 近似计算字数
+    const readTime = Math.ceil(wordCount / 400); // 假设每分钟读400字
+
+    document.getElementById('word-count').innerHTML = `<i class="fas fa-file-word"></i> 字数: ${wordCount}`;
+    document.getElementById('read-time').innerHTML = `<i class="fas fa-clock"></i> 预计阅读: ${readTime} 分钟`;
+}
+
+// 更新光标位置
+function updateCursorPos() {
+    const editor = document.getElementById('article-content');
+    const textBefore = editor.value.substring(0, editor.selectionStart);
+    const lines = textBefore.split('\n');
+    const line = lines.length;
+    const col = lines[lines.length - 1].length + 1;
+    
+    document.getElementById('cursor-pos').textContent = `行 ${line}, 列 ${col}`;
+}
+
+// 禅模式切换
+function toggleZenMode() {
+    document.body.classList.toggle('zen-mode');
+    const icon = document.querySelector('.btn-icon .fa-expand, .btn-icon .fa-compress');
+    if (icon) {
+        if (document.body.classList.contains('zen-mode')) {
+            icon.className = 'fas fa-compress';
+            showNotification('进入禅模式 (Esc退出)', 'info');
+        } else {
+            icon.className = 'fas fa-expand';
+        }
+    }
+}
+
+// 目录显示切换
+function toggleTOC() {
+    const panel = document.getElementById('toc-panel');
+    if (panel.style.display === 'none') {
+        panel.style.display = 'flex';
+        updateTOC();
+    } else {
+        panel.style.display = 'none';
+    }
+}
+
+// 更新目录内容
+function updateTOC() {
+    const content = document.getElementById('article-content').value;
+    const tocContainer = document.getElementById('toc-content');
+    if (!tocContainer) return;
+
+    const lines = content.split('\n');
+    let tocHtml = '';
+    
+    lines.forEach((line, index) => {
+        const match = line.match(/^(#{1,6})\s+(.+)$/);
+        if (match) {
+            const level = match[1].length;
+            const title = match[2];
+            tocHtml += `<div class="toc-item toc-level-${level}" onclick="scrollToLine(${index})">${title}</div>`;
+        }
+    });
+
+    tocContainer.innerHTML = tocHtml || '<div class="toc-empty">暂无目录</div>';
+}
+
+// 滚动到指定行
+function scrollToLine(lineIndex) {
+    const editor = document.getElementById('article-content');
+    const lines = editor.value.split('\n');
+    let charPos = 0;
+    for (let i = 0; i < lineIndex; i++) {
+        charPos += lines[i].length + 1;
+    }
+    
+    editor.focus();
+    editor.setSelectionRange(charPos, charPos);
+    
+    // 计算滚动位置
+    const lineHeight = 20.8; // 大约值
+    editor.scrollTop = lineIndex * lineHeight;
+}
+
+// 同步滚动
+let isSyncScroll = true;
+
+function toggleSyncScroll() {
+    isSyncScroll = !isSyncScroll;
+    const btn = document.getElementById('btn-sync-scroll');
+    btn.innerHTML = isSyncScroll ? '<i class="fas fa-arrows-alt-v"></i>' : '<i class="fas fa-arrows-alt-v" style="opacity: 0.5"></i>';
+    btn.title = `同步滚动: ${isSyncScroll ? '开启' : '关闭'}`;
+}
+
+function handleEditorScroll() {
+    if (!isSyncScroll) return;
+    const editor = document.getElementById('article-content');
+    const preview = document.getElementById('article-preview');
+    
+    const percentage = editor.scrollTop / (editor.scrollHeight - editor.clientHeight);
+    preview.scrollTop = percentage * (preview.scrollHeight - preview.clientHeight);
+}
+

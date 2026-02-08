@@ -65,7 +65,12 @@
                     <div class="editor-tab-item active" id="current-editor-tab">
                         <i class="fas fa-file-alt"></i>
                         <span id="editor-tab-title">新建文章</span>
-                        <button class="tab-close" onclick="closeEditor()">&times;</button>
+                        <div class="tab-actions">
+                            <button class="btn-icon" onclick="toggleZenMode()" title="禅模式 (Esc退出)">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="tab-close" onclick="closeEditor()">&times;</button>
+                        </div>
                     </div>
                 </div>
                 
@@ -100,6 +105,37 @@
                         </div>
                     </div>
 
+                    <!-- Markdown 工具栏 -->
+                    <div class="editor-toolbar">
+                        <div class="toolbar-group">
+                            <button class="toolbar-item" onclick="insertMarkdown('bold')" title="加粗 (Ctrl+B)"><i class="fas fa-bold"></i></button>
+                            <button class="toolbar-item" onclick="insertMarkdown('italic')" title="斜体 (Ctrl+I)"><i class="fas fa-italic"></i></button>
+                            <button class="toolbar-item" onclick="insertMarkdown('heading')" title="标题 (Ctrl+H)"><i class="fas fa-heading"></i></button>
+                        </div>
+                        <div class="toolbar-divider"></div>
+                        <div class="toolbar-group">
+                            <button class="toolbar-item" onclick="insertMarkdown('link')" title="链接 (Ctrl+L)"><i class="fas fa-link"></i></button>
+                            <button class="toolbar-item" onclick="insertMarkdown('image')" title="图片 (Ctrl+G)"><i class="fas fa-image"></i></button>
+                            <button class="toolbar-item" onclick="insertMarkdown('code')" title="代码块 (Ctrl+K)"><i class="fas fa-code"></i></button>
+                        </div>
+                        <div class="toolbar-divider"></div>
+                        <div class="toolbar-group">
+                            <button class="toolbar-item" onclick="insertMarkdown('list-ul')" title="无序列表"><i class="fas fa-list-ul"></i></button>
+                            <button class="toolbar-item" onclick="insertMarkdown('list-ol')" title="有序列表"><i class="fas fa-list-ol"></i></button>
+                            <button class="toolbar-item" onclick="insertMarkdown('quote')" title="引用"><i class="fas fa-quote-left"></i></button>
+                        </div>
+                        <div class="toolbar-divider"></div>
+                        <div class="toolbar-group">
+                            <button class="toolbar-item" onclick="insertMarkdown('table')" title="表格工具"><i class="fas fa-table"></i></button>
+                            <button class="toolbar-item" onclick="insertMarkdown('hr')" title="分割线"><i class="fas fa-minus"></i></button>
+                        </div>
+                        <div class="toolbar-spacer"></div>
+                        <div class="toolbar-group">
+                            <button class="toolbar-item" id="btn-sync-scroll" onclick="toggleSyncScroll()" title="同步滚动: 开启"><i class="fas fa-arrows-alt-v"></i></button>
+                            <button class="toolbar-item" onclick="toggleTOC()" title="查看目录"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+
                     <!-- 编辑器和预览 -->
                     <div class="editor-preview-container">
                         <div class="editor-wrapper">
@@ -107,6 +143,10 @@
                                 <i class="fab fa-markdown"></i> Markdown 编辑
                             </div>
                             <textarea id="article-content" class="markdown-editor" placeholder="在这里输入 Markdown 内容..."></textarea>
+                        </div>
+                        <div id="toc-panel" class="toc-panel" style="display: none;">
+                            <div class="toc-header">文章目录</div>
+                            <div id="toc-content" class="toc-content"></div>
                         </div>
                         <div class="preview-wrapper">
                             <div class="preview-label">
@@ -116,6 +156,18 @@
                                 </button>
                             </div>
                             <div id="article-preview" class="markdown-preview"></div>
+                        </div>
+                    </div>
+
+                    <!-- 状态栏 -->
+                    <div class="editor-status-bar">
+                        <div class="status-left">
+                            <span class="status-item" id="word-count"><i class="fas fa-file-word"></i> 字数: 0</span>
+                            <span class="status-item" id="read-time"><i class="fas fa-clock"></i> 预计阅读: 0 分钟</span>
+                        </div>
+                        <div class="status-right">
+                            <span class="status-item" id="save-status"><i class="fas fa-check-circle"></i> 已保存到本地</span>
+                            <span class="status-item" id="cursor-pos">行 1, 列 1</span>
                         </div>
                     </div>
 

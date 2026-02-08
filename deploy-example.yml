@@ -12,24 +12,26 @@ jobs:
     steps:
     - name: 检出代码
       uses: actions/checkout@v4
-      
+
+    - name: 安装 pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
     - name: 设置 Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: 'my-blog/package-lock.json'
-        
+        cache: 'pnpm'
+
     - name: 安装依赖
       run: |
-        cd my-blog
-        npm ci
-        
+        pnpm install --frozen-lockfile
+
     - name: 清理并生成静态文件
       run: |
-        cd my-blog
-        npx hexo clean
-        npx hexo generate
+        pnpm hexo clean
+        pnpm hexo generate
         
     - name: 部署到 GitHub Pages
       uses: peaceiris/actions-gh-pages@v3

@@ -219,19 +219,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // 代码块复制功能 - CSDN风格
-    const codeBlocks = document.querySelectorAll('.markdown-body pre');
-    codeBlocks.forEach((pre) => {
-        // 创建复制按钮
+    // 代码块复制功能 - 优化版 (解决拆分和重复按钮问题)
+    const highlights = document.querySelectorAll('.markdown-body figure.highlight');
+    highlights.forEach((highlight) => {
         const copyButton = document.createElement('button');
         copyButton.className = 'code-copy-btn';
         copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
         copyButton.setAttribute('title', '复制代码');
         
-        // 添加点击事件
         copyButton.addEventListener('click', async () => {
-            const code = pre.querySelector('code');
-            const text = code ? code.innerText : pre.innerText;
+            const codeCell = highlight.querySelector('.code');
+            const text = codeCell ? codeCell.innerText : highlight.innerText;
             
             try {
                 await navigator.clipboard.writeText(text);
@@ -244,23 +242,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 2000);
             } catch (err) {
                 console.error('复制失败:', err);
-                copyButton.innerHTML = '<i class="fas fa-times"></i> 失败';
-                setTimeout(() => {
-                    copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
-                }, 2000);
             }
         });
         
-        pre.appendChild(copyButton);
+        highlight.style.position = 'relative';
+        highlight.appendChild(copyButton);
+    });
+
+    // 处理普通的 pre 代码块
+    const plainPres = document.querySelectorAll('.markdown-body pre');
+    plainPres.forEach((pre) => {
+        // 如果是在 highlight 中的 pre，跳过
+        if (pre.closest('figure.highlight')) return;
         
-        // 检测代码语言并添加标签
-        const code = pre.querySelector('code');
-        if (code && code.className) {
-            const langMatch = code.className.match(/language-(\w+)/);
-            if (langMatch) {
-                pre.setAttribute('data-lang', langMatch[1]);
+        const copyButton = document.createElement('button');
+        copyButton.className = 'code-copy-btn';
+        copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+        
+        copyButton.addEventListener('click', async () => {
+            const text = pre.innerText;
+            try {
+                await navigator.clipboard.writeText(text);
+                copyButton.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                copyButton.classList.add('copied');
+                setTimeout(() => {
+                    copyButton.innerHTML = '<i class="fas fa-copy"></i> 复制';
+                    copyButton.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('复制失败:', err);
             }
-        }
+        });
+        
+        pre.style.position = 'relative';
+        pre.appendChild(copyButton);
     });
 });
 </script>

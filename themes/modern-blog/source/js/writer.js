@@ -740,19 +740,19 @@ function resetForm() {
 
 // 生成 Frontmatter
 function generateFrontmatter(article) {
+    const tags = Array.isArray(article.tags) && article.tags.length > 0 
+        ? article.tags.map(tag => `\n  - ${tag}`).join('') 
+        : ' []';
+    const excerpt = article.excerpt ? ` "${article.excerpt}"` : ' ""';
+
     let frontmatter = `---
 title: ${article.title}
 date: ${new Date(article.date).toISOString()}
 categories:
   - ${article.category}
-tags:`;
-    
-    article.tags.forEach(tag => {
-        frontmatter += `\n  - ${tag}`;
-    });
-    
-    frontmatter += `\nexcerpt: ${article.excerpt}`;
-    frontmatter += '\n---';
+tags:${tags}
+excerpt:${excerpt}
+---`;
     
     return frontmatter;
 }

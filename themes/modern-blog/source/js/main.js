@@ -51,25 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 代码块复制功能
-    const codeBlocks = document.querySelectorAll('.post-body pre');
-    codeBlocks.forEach(block => {
-        const copyBtn = document.createElement('button');
-        copyBtn.className = 'copy-btn';
-        copyBtn.innerHTML = '<i class="fas fa-copy"></i> 复制';
-        copyBtn.addEventListener('click', function() {
-            const code = block.querySelector('code').textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制';
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fas fa-copy"></i> 复制';
-                }, 2000);
-            });
-        });
-        block.style.position = 'relative';
-        block.appendChild(copyBtn);
-    });
-
     // 图片懒加载
     if ('IntersectionObserver' in window) {
         const imageObserver = new IntersectionObserver((entries, observer) => {

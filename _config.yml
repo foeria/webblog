@@ -97,7 +97,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: modern-blog
+theme: butterfly
 
 # 归档页面配置
 archive_generator:
@@ -129,5 +129,5 @@ route:
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://github.com/username/blog.git
+  repo: https://github.com/foeria/webblog.git
   branch: gh-pages

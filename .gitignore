@@ -29,6 +29,12 @@ public/
 .deploy*/
 db.json
 
+# Themes - exclude old themes, keep only butterfly
+themes/modern-blog/
+themes/landscape/
+themes/*/node_modules/
+!themes/butterfly/
+
 # IDEs
 .vscode/
 .idea/

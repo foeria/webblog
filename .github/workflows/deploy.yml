@@ -22,7 +22,8 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          submodules: true  # 检出子模块（若主题以子模块方式管理）
+          fetch-depth: 0    # 获取完整历史以确保子模块引用正确
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v4

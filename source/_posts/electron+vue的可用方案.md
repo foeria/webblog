@@ -1,4 +1,14 @@
-
+---
+title: vue结合electron开发桌面应用的可行方案
+date: 2026-02-14
+categories:
+  - 技术分享
+tags:
+  - 桌面开发
+  - vue
+  - electron
+excerpt: 本文主要在于介绍electron结合vue开发桌面应用的一个可行方案，适合初学者入门，详细文章请移步：https://blog.csdn.net/foeria/article/details/151795654?spm=1001.2014.3001.5501
+---
 最近需要用vue结合electron开发桌面应用，在网上搜索了许多教程，内容都比较过时，容易让很多萌新走弯路，这里提供一个可行的模块化方案。
 
 1.首先，创建一个vue3项目
